@@ -2,18 +2,20 @@
 
 namespace App\Http\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
+
 
 trait CanLoadRelationships {
-    public function loadRelationships(Model | Builder $for, ?array $relations = null): Model | Builder {
+    public function loadRelationships(Builder | HasMany | Model $for, ?array $relations = null): Builder | HasMany | Model {
 
         $relations = $relations ?? $this->relations ?? [];
 
         foreach ($relations as $relation) {
             $for->when(
                 $this->shouldIncludeRelation($relation),
-                fn ($q) => $for instanceof Model ? $for->load($relation) : $q->with($relation)
+                fn($q) => $for instanceof Model ? $for->load($relation) : $q->with($relation)
             );
         }
 
