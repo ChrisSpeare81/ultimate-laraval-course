@@ -19,6 +19,7 @@ class AttendeeController extends Controller {
 
     public function __construct() {
         $this->authorizeResource(Attendee::class, 'attendee');
+        $this->middleware('throttle:60,1')->only(['store', 'destroy']);
     }
 
     /**
