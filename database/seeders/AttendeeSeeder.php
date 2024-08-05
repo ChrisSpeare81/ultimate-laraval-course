@@ -16,7 +16,7 @@ class AttendeeSeeder extends Seeder {
         $users = User::all();
         $events = Event::all();
 
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 500; $i++) {
 
             $user = $users->random();
             $eventsToAttend = $events->random(rand(1, 3));
