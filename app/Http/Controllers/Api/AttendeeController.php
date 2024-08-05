@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Event;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\AttendeeResource;
 use App\Http\Traits\CanLoadRelationships;
 use App\Models\Attendee;
+use App\Models\Event;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class AttendeeController extends Controller {
 
+    use AuthorizesRequests;
     use CanLoadRelationships;
 
     private array $relations = ['user'];
+
+    public function __construct() {
+        $this->authorizeResource(Attendee::class, 'attendee');
+    }
 
     /**
      * Display a listing of the resource.
@@ -30,7 +36,7 @@ class AttendeeController extends Controller {
     public function store(Request $request, Event $event) {
 
         $attendee = $event->attendees()->create([
-            'user_id' => 1
+            'user_id' => $request->user()->id
         ]);
 
         return new AttendeeResource($this->loadRelationships($attendee));
@@ -46,7 +52,8 @@ class AttendeeController extends Controller {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $event, Attendee $attendee) {
+    public function destroy(Event $event, Attendee $attendee) {
+
         $attendee->delete();
 
         return response(status: 204);
