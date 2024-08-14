@@ -10,7 +10,11 @@ class JobApplicationController extends Controller {
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Job $job) {
+    public function create(Request $request, Job $job) {
+        if ($request->user()->cannot('apply', $job)) {
+            abort(403);
+        }
+
         return view('job_application.create', ['job' => $job]);
     }
 
