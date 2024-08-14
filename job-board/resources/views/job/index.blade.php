@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <button class="w-full">Filter</button>
+            <x-button class="w-full">Filter</x-button>
         </form>
     </x-card>
 
