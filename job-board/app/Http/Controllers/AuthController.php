@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller {
     /**
@@ -23,28 +24,20 @@ class AuthController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id) {
-        //
-    }
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id) {
-        //
-    }
+        $credentials = $request->only('email', 'password');
+        $remember = $request->filled('remember');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id) {
-        //
+        if (Auth::attempt($credentials, $remember)) {
+            return redirect()->intended('/');
+        } else {
+            return redirect()->back()->with('error', 'Invalid credentials');
+        }
     }
 
     /**
