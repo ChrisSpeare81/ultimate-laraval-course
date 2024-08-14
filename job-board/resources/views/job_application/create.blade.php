@@ -9,7 +9,7 @@
 
     <x-card>
         <h2 class="mb-4 text-lg font-medium">
-            Your Job Applicatoin
+            Your Job Application
         </h2>
 
         <form action='{{ route('jobs.application.store', $job) }}' method="POST">
