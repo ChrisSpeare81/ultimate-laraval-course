@@ -1,6 +1,7 @@
 services:
     php:
         build: ./docker/php
+        restart: on-failure
         volumes:
             - ./:/var/www
         ports:
@@ -11,6 +12,7 @@ services:
 
     nginx:
         image: nginx:stable-alpine
+        restart: on-failure
         ports:
             - "80:80"
         volumes:
@@ -21,6 +23,7 @@ services:
 
     db:
         image: mysql:8.0.33
+        restart: on-failure
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: laravel
@@ -36,7 +39,7 @@ services:
         depends_on:
             - db
         image: phpmyadmin
-        restart: always
+        restart: on-failure
         ports:
             - "8090:80"
         environment:
@@ -48,7 +51,7 @@ services:
     mailpit:
         image: axllent/mailpit
         container_name: mailpit
-        restart: unless-stopped
+        restart: on-failure
         volumes:
             - ./data:/data
         ports:
