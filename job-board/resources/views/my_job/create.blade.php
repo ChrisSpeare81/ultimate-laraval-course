@@ -17,7 +17,7 @@
 
                 <div>
                     <x-label for="location" :required="true">Location</x-label>
-                    <x-text-input name="locaation" />
+                    <x-text-input name="location" />
                 </div>
 
                 <div class="col-span-2">
