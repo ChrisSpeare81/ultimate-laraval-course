@@ -9,8 +9,15 @@ class MyJobController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
-        return view('my_job.index');
+    public function index(Request $request) {
+        return view(
+            'my_job.index',
+            [
+                'jobs' => $request->user()->employer->jobs()
+                    ->with(['employer', 'jobApplications', 'jobApplications.user'])
+                    ->latest()->get()
+            ]
+        );
     }
 
     /**
